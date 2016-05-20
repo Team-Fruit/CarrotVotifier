@@ -22,21 +22,42 @@ public class EventVotifier {
 
 	@SubscribeEvent
 	public void onVoteEvent(final VotifierEvent event) {
-		Reference.logger.info("VOTE!!");
+		//Reference.logger.info("VOTE!!");
 		final Vote vote = event.getVote();
-		//final String name = vote.getUsername();
+
+		// Get Voter Name
 		final String name = vote.getUsername();
-		//		final String name = name1.replaceAll(" ", "");
-		final World world = MinecraftServer.getServer().getEntityWorld();
-		final IChatComponent c1 = ChatUtil.byText(String.format("§e%sが投票しました。引き換えアイテムをゲット！", name));
-		final IChatComponent c2 = ChatUtil.byJson("{\"text\":\"手に持ったTConstructのツールがレベルアップ！投票はこちら\",\"underlined\":true,\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://minecraft.jp/servers/mc.bebehp.com/vote\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§1クリック§7して §eJapan Minecraft Servers §7で §6FruitServer §7の投票をしよう！\"}}");
-		ChatUtil.sendServerChat(c1, c2);
+		//final String name1 = vote.getUsername();
+		//final String name = name1.replaceAll(" ", "");
+
+		// Execute Commands
 		this.s.getCommandManager().executeCommand(this.s, String.format("/give %s minecraft:spawn_egg 1 0 {display:{Name:\"投票引き換え券\",Lore:[\"Spawn地点で引き換えよう！\"]},ench:[{id:21,lvl:1}]}", name));
 		this.s.getCommandManager().executeCommand(this.s, String.format("/leveluptool %s", name));
+
+		// Get Voter EntityPlayer
+		final World world = MinecraftServer.getServer().getEntityWorld();
 		final EntityPlayer player = world.getPlayerEntityByName(name);
+
+		// Fireworks
 		if (player != null) {
 			fireworksPlayer(world, player);
 		}
+
+		// Notice
+		final IChatComponent c0 = ChatUtil.byText("");
+
+		// Notice - Hold Items
+		if (player != null) {
+			final ItemStack item = player.getHeldItem();
+			if (item != null) {
+				c0.appendSibling(item.func_151000_E()).appendSibling(ChatUtil.byText("§eを持った"));
+			}
+		}
+
+		// Notice
+		final IChatComponent c1 = ChatUtil.byText(String.format("§e%sが投票しました。引き換えアイテムをゲット！", name));
+		final IChatComponent c2 = ChatUtil.byJson("{\"text\":\"手に持ったTConstructのツールがレベルアップ！投票はこちら\",\"underlined\":true,\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://minecraft.jp/servers/mc.bebehp.com/vote\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§1クリック§7して §eJapan Minecraft Servers §7で §6FruitServer §7の投票をしよう！\"}}");
+		ChatUtil.sendServerChat(c1, c2);
 	}
 
 
