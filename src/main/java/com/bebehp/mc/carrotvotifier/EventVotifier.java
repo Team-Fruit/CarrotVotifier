@@ -55,7 +55,7 @@ public class EventVotifier {
 		}
 
 		// Notice
-		final IChatComponent c1 = ChatUtil.byText(String.format("§e%sが投票しました。引き換えアイテムをゲット！", name));
+		final IChatComponent c1 = c0.appendSibling(ChatUtil.byText(String.format("§e%sが投票しました。引き換えアイテムをゲット！", name)));
 		final IChatComponent c2 = ChatUtil.byJson("{\"text\":\"手に持ったTConstructのツールがレベルアップ！投票はこちら\",\"underlined\":true,\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://minecraft.jp/servers/mc.bebehp.com/vote\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§1クリック§7して §eJapan Minecraft Servers §7で §6FruitServer §7の投票をしよう！\"}}");
 		ChatUtil.sendServerChat(c1, c2);
 	}
