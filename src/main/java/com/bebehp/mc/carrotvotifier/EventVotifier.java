@@ -39,7 +39,7 @@ public class EventVotifier {
 		//		}
 
 		// Notice
-		final IChatComponent c0 = ChatUtil.byText("");
+		IChatComponent c0 = ChatUtil.byText("");
 
 		// Notice - Hold Items
 		if (player != null) {
@@ -50,9 +50,12 @@ public class EventVotifier {
 		}
 
 		// Notice
-		final IChatComponent c1 = c0.appendSibling(ChatUtil.byText(String.format("§e%sが投票しました。引き換えアイテムをゲット！", name)));
-		final IChatComponent c2 = ChatUtil.byJson("{\"text\":\"手に持ったTConstructのツールがレベルアップ！投票はこちら\",\"underlined\":true,\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://minecraft.jp/servers/mc.bebehp.com/vote\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§1クリック§7して §eJapan Minecraft Servers §7で §6FruitServer §7の投票をしよう！\"}}");
-		ChatUtil.sendServerChat(c1, c2);
+		c0 = c0.appendSibling(ChatUtil.byText(String.format("§e%sが投票しました。", name)));
+		if (player != null) {
+			c0 = c0.appendSibling(ChatUtil.byText("引き換えアイテムをゲット！"));
+		}
+		final IChatComponent c1 = ChatUtil.byJson("{\"text\":\"手に持ったTConstructのツールがレベルアップ！投票はこちら\",\"underlined\":true,\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://minecraft.jp/servers/mc.bebehp.com/vote\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§1クリック§7して §eJapan Minecraft Servers §7で §6FruitServer §7の投票をしよう！\"}}");
+		ChatUtil.sendServerChat(c0, c1);
 	}
 
 
