@@ -13,6 +13,9 @@ import net.minecraft.world.World;
 public class EventVotifier {
 	public static final EventVotifier INSTANCE = new EventVotifier();
 
+	private EventVotifier() {
+	}
+
 	private final MinecraftServer s = MinecraftServer.getServer();
 
 	@SubscribeEvent
@@ -21,10 +24,14 @@ public class EventVotifier {
 		final Vote vote = event.getVote();
 
 		// Get Voter Name
-		final String name = vote.getUsername();
+		String name = vote.getUsername();
 		//final String name1 = vote.getUsername();
-		//final String name = name1.replaceAll(" ", "");
+		name = name.replaceAll("Votifier Test", "sjcl");
 
+		rewards(name);
+	}
+
+	public void rewards(final String name) {
 		// Execute Commands
 		this.s.getCommandManager().executeCommand(this.s, String.format("/give %s minecraft:spawn_egg 1 0 {display:{Name:\"投票引き換え券\",Lore:[\"Spawn地点で引き換えよう！\"]},ench:[{id:21,lvl:1}]}", name));
 		this.s.getCommandManager().executeCommand(this.s, String.format("/leveluptool %s", name));
@@ -57,7 +64,6 @@ public class EventVotifier {
 		final IChatComponent c1 = ChatUtil.byJson("{\"text\":\"手に持ったTConstructのツールがレベルアップ！投票はこちら\",\"underlined\":true,\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://minecraft.jp/servers/mc.bebehp.com/vote\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§1クリック§7して §eJapan Minecraft Servers §7で §6FruitServer §7の投票をしよう！\"}}");
 		ChatUtil.sendServerChat(c0, c1);
 	}
-
 
 	//	public static void fireworksPlayer(final World world, final EntityPlayer player) {
 	//		world.spawnEntityInWorld(new EntityFireworkRocket(
