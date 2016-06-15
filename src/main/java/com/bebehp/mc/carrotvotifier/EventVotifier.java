@@ -4,11 +4,10 @@ import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.world.World;
 
 public class EventVotifier {
 	public static final EventVotifier INSTANCE = new EventVotifier();
@@ -30,8 +29,7 @@ public class EventVotifier {
 		this.s.getCommandManager().executeCommand(this.s, String.format("/leveluptool %s", name));
 
 		// Get Voter EntityPlayer
-		final World world = MinecraftServer.getServer().getEntityWorld();
-		final EntityPlayer player = world.getPlayerEntityByName(name);
+		final EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(name);
 
 		// Fireworks
 		//		if (player != null) {
