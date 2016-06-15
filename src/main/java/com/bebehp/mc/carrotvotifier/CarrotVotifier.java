@@ -30,14 +30,14 @@ public class CarrotVotifier {
 
 	@EventHandler
 	public void init(final FMLInitializationEvent event) {
-		//    		FMLCommonHandler.instance().bus().register(InputHandler.INSTANCE);
-		//    		FMLCommonHandler.instance().bus().register(TickHandler.INSTANCE);
-		//    		FMLCommonHandler.instance().bus().register(ConfigurationHandler.INSTANCE);
-		//
-		//    		MinecraftForge.EVENT_BUS.register(Renderer.INSTANCE);
-		//    		MinecraftForge.EVENT_BUS.register(new OverlayHandler());
 		Reference.logger.info("INIT!!");
 		MinecraftForge.EVENT_BUS.register(EventVotifier.INSTANCE);
+	}
+
+	@EventHandler
+	public void serverLoad(final FMLServerStartingEvent event)
+	{
+		event.registerServerCommand(CarrotCommand.INSTANCE);
 	}
 
 	@EventHandler
