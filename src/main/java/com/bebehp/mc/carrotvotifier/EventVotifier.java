@@ -1,9 +1,8 @@
 package com.bebehp.mc.carrotvotifier;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.Queue;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
 import com.vexsoftware.votifier.model.VotifierEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -20,7 +19,7 @@ public class EventVotifier {
 	}
 
 	private final MinecraftServer s = MinecraftServer.getServer();
-	private final List<VotifierEvent> update = Lists.newLinkedList();
+	private final Queue<VotifierEvent> update = Queues.newConcurrentLinkedQueue();
 
 	@SubscribeEvent
 	public void onVoteEvent(final VotifierEvent event) {
@@ -29,11 +28,9 @@ public class EventVotifier {
 
 	@SubscribeEvent
 	public void onServerTick(final ServerTickEvent event) {
-		for (final Iterator<VotifierEvent> it = this.update.iterator(); it.hasNext();) {
-			final VotifierEvent votifierEvent = it.next();
-			rewards(votifierEvent.getVote().getUsername());
-			it.remove();
-		}
+		VotifierEvent line;
+		while ((line = this.update.poll())!=null)
+			rewards(line.getVote().getUsername());
 	}
 
 	public void rewards(final String name) {
