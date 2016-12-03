@@ -1,9 +1,13 @@
 package com.bebehp.mc.carrotvotifier;
 
-import com.vexsoftware.votifier.model.Vote;
+import java.util.Iterator;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 import com.vexsoftware.votifier.model.VotifierEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -16,18 +20,20 @@ public class EventVotifier {
 	}
 
 	private final MinecraftServer s = MinecraftServer.getServer();
+	private final List<VotifierEvent> update = Lists.newLinkedList();
 
 	@SubscribeEvent
 	public void onVoteEvent(final VotifierEvent event) {
-		//Reference.logger.info("VOTE!!");
-		final Vote vote = event.getVote();
+		this.update.add(event);
+	}
 
-		// Get Voter Name
-		String name = vote.getUsername();
-		//final String name1 = vote.getUsername();
-		name = name.replaceAll("Votifier Test", "sjcl");
-
-		rewards(name);
+	@SubscribeEvent
+	public void onServerTick(final ServerTickEvent event) {
+		for (final Iterator<VotifierEvent> it = this.update.iterator(); it.hasNext();) {
+			final VotifierEvent votifierEvent = it.next();
+			rewards(votifierEvent.getVote().getUsername());
+			it.remove();
+		}
 	}
 
 	public void rewards(final String name) {
@@ -36,63 +42,58 @@ public class EventVotifier {
 		this.s.getCommandManager().executeCommand(this.s, String.format("/leveluptool %s", name));
 
 		// Get Voter EntityPlayer
-		final EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(name);
-
-		// Fireworks
-		//		if (player != null) {
-		//			fireworksPlayer(world, player);
-		//		}
+		final EntityPlayerMP player = this.s.getConfigurationManager().func_152612_a(name);
 
 		// Notice
 		IChatComponent c0 = ChatUtil.byText("");
 
 		// Notice - Hold Items
-		if (player != null) {
+		if (player!=null) {
 			final ItemStack item = player.getHeldItem();
-			if (item != null) {
+			if (item!=null)
 				c0.appendSibling(item.func_151000_E()).appendSibling(ChatUtil.byText("§eを持った"));
-			}
 		}
 
 		// Notice
 		c0 = c0.appendSibling(ChatUtil.byText(String.format("§e%sが投票しました。", name)));
-		if (player != null) {
+		if (player!=null)
 			c0 = c0.appendSibling(ChatUtil.byText("引き換えアイテムをゲット！"));
-		}
 		final IChatComponent c1 = ChatUtil.byJson("{\"text\":\"手に持ったTConstructのツールがレベルアップ！投票はこちら\",\"underlined\":true,\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://minecraft.jp/servers/mc.bebehp.com/vote\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§1クリック§7して §eJapan Minecraft Servers §7で §6FruitServer §7の投票をしよう！\"}}");
 		ChatUtil.sendServerChat(c0, c1);
 	}
 
-	//	public static void fireworksPlayer(final World world, final EntityPlayer player) {
-	//		world.spawnEntityInWorld(new EntityFireworkRocket(
-	//				world,
-	//				player.getPlayerCoordinates().posX,
-	//				player.getPlayerCoordinates().posY,
-	//				player.getPlayerCoordinates().posZ,
-	//				makeFireworks()
-	//				));
-	//	}
-	//
-	//	public static ItemStack makeFireworks() {
-	//		final NBTTagCompound explosion = new NBTTagCompound();
-	//		explosion.setByte("Type", (byte)2);
-	//		explosion.setByte("Trail", (byte)1);
-	//		explosion.setIntArray("Colors", ItemDye.field_150922_c);
-	//
-	//		final NBTTagList nbttaglist = new NBTTagList();
-	//		nbttaglist.appendTag(explosion);
-	//		nbttaglist.appendTag(explosion);
-	//		nbttaglist.appendTag(explosion);
-	//
-	//		final NBTTagCompound nbt_fireworks = new NBTTagCompound();
-	//		nbt_fireworks.setTag("Explosions", nbttaglist);
-	//		nbt_fireworks.setByte("Flight", (byte)1);
-	//
-	//		final NBTTagCompound nbt = new NBTTagCompound();
-	//		nbt.setTag("Fireworks", nbt_fireworks);
-	//
-	//		final ItemStack itemstack = new ItemStack(Items.firework_charge);
-	//		itemstack.setTagCompound(nbt); return itemstack;
-	//	}
+	/*
+		public static void fireworksPlayer(final World world, final EntityPlayer player) {
+			world.spawnEntityInWorld(new EntityFireworkRocket(
+					world,
+					player.getPlayerCoordinates().posX,
+					player.getPlayerCoordinates().posY,
+					player.getPlayerCoordinates().posZ,
+					makeFireworks()
+					));
+		}
+	
+		public static ItemStack makeFireworks() {
+			final NBTTagCompound explosion = new NBTTagCompound();
+			explosion.setByte("Type", (byte)2);
+			explosion.setByte("Trail", (byte)1);
+			explosion.setIntArray("Colors", ItemDye.field_150922_c);
+	
+			final NBTTagList nbttaglist = new NBTTagList();
+			nbttaglist.appendTag(explosion);
+			nbttaglist.appendTag(explosion);
+			nbttaglist.appendTag(explosion);
+	
+			final NBTTagCompound nbt_fireworks = new NBTTagCompound();
+			nbt_fireworks.setTag("Explosions", nbttaglist);
+			nbt_fireworks.setByte("Flight", (byte)1);
+	
+			final NBTTagCompound nbt = new NBTTagCompound();
+			nbt.setTag("Fireworks", nbt_fireworks);
+	
+			final ItemStack itemstack = new ItemStack(Items.firework_charge);
+			itemstack.setTagCompound(nbt); return itemstack;
+		}
+		*/
 
 }
