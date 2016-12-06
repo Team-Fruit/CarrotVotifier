@@ -2,6 +2,7 @@ package com.bebehp.mc.carrotvotifier;
 
 import java.util.Map;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -32,11 +33,11 @@ public class CarrotVotifier {
 	public void init(final FMLInitializationEvent event) {
 		Reference.logger.info("INIT!!");
 		MinecraftForge.EVENT_BUS.register(EventVotifier.INSTANCE);
+		FMLCommonHandler.instance().bus().register(EventVotifier.INSTANCE);
 	}
 
 	@EventHandler
-	public void serverLoad(final FMLServerStartingEvent event)
-	{
+	public void serverLoad(final FMLServerStartingEvent event) {
 		event.registerServerCommand(CarrotCommand.INSTANCE);
 	}
 
