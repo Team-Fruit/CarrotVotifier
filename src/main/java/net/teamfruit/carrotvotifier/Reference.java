@@ -1,4 +1,4 @@
-package com.bebehp.mc.carrotvotifier;
+package net.teamfruit.carrotvotifier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

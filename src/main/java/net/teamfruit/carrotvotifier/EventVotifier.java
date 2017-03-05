@@ -1,4 +1,4 @@
-package com.bebehp.mc.carrotvotifier;
+package net.teamfruit.carrotvotifier;
 
 import java.util.Queue;
 

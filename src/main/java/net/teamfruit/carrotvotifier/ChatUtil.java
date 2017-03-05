@@ -1,4 +1,4 @@
-package com.bebehp.mc.carrotvotifier;
+package net.teamfruit.carrotvotifier;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 

@@ -1,4 +1,4 @@
-package com.bebehp.mc.carrotvotifier;
+package net.teamfruit.carrotvotifier;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
