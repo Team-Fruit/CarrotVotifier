@@ -47,11 +47,10 @@ public class EventVotifier {
 
 		// Get Voter EntityPlayer
 		final EntityPlayerMP player = this.s.getConfigurationManager().func_152612_a(name);
-		final World world = player.getEntityWorld();
 
 		// Fireworks
 		if (player!=null)
-			fireworksPlayer(world, player);
+			fireworksPlayer(player.getEntityWorld(), player);
 
 		// Notice
 		IChatComponent c0 = ChatUtil.byText("");
